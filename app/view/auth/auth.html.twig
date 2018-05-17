@@ -26,6 +26,10 @@
          <small id="XSRF"></small>
     </div>
 </form>
+    <p id="status"></p>
+    <p id="statusText"></p>
+    <p id="thrownError"></p>
+    <p id="ajaxOptions"></p>
 <script type="text/javascript">
     $("document").ready(function(){
         $("form").submit(function(e){
@@ -43,8 +47,11 @@
                         window.location.href = data.redirect;
                     }
                 },
-                error: function () {
-                    alert('error');
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#status').text(xhr.status);
+                    $('#statusText').text(xhr.statusText);
+                    $('#thrownError').text(thrownError);
+                    $('#ajaxOptions').text(ajaxOptions);
                 }
             });
             e.preventDefault();
