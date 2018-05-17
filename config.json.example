@@ -1,0 +1,9 @@
+{
+  "db": {
+    "servername": "127.0.0.1",
+    "username":  "",
+    "password": "",
+    "dbname": ""
+  },
+  "path": "/path/to/project/directory"
+}

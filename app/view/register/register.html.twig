@@ -1,0 +1,96 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<form action="register" method="post">
+    <div class="row justify-content-center align-items-center">
+        <input class="form-control col-5" placeholder="username"  type="text" name="username" value="{{ username }}">
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <ul class="list-group">
+            <li><small id="usernameExistInDb"></small></li>
+            <li><small id="usernameNotValid"></small></li>
+            <li><small id="usernameEmpty"></small></li>
+        </ul>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <input class="form-control col-5" placeholder="email"  type="text" name="userEmail" value="{{ userEmail }}">
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <ul class="list-group">
+            <li><small id="emailNotValid"></small></li>
+            <li><small id="emailEmpty"></small></li>
+            <li><small id="emailExistInDb"></small></li>
+        </ul>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <input class="form-control col-5" placeholder="password" type="password"  name="password1">
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <ul class="list-group">
+            <li><small id="password1Empty"></small></li>
+        </ul>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <input class="form-control col-5" placeholder="password" type="password"  name="password2">
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <ul class="list-group">
+            <li><small id="password2Empty"></small></li>
+            <li><small id="passwordsNotTheSame"></small></li>
+        </ul>
+    </div>
+    <div class="row justify-content-center">
+        <input class="btn btn-primary"   type="submit" value="submit" name="sumbit">
+    </div>
+    <input type="hidden" name="token" value="{{ token }}">
+    <small id="XSRF"></small>
+</form>
+<script type="text/javascript">
+    $("document").ready(function(){
+        $("form").submit(function(e){
+            $.ajax({
+                url: 'register',
+                type: 'POST',
+                data: {"username": $("input[name='username']").val(),
+                    "userEmail": $("input[name='userEmail']").val(),
+                    "password1": $('input[name="password1"]').val(),
+                    "password2": $('input[name="password2"]').val(),
+                    'token': $('input[name="token"]').val()},
+                dataType: 'json',
+                success: function(data){
+                    if(data.errors){
+                        pushError(data.errorsArray);
+                        pushField(data.username, data.userEmail);
+                    }else{
+                        window.location.href = data.redirect;
+                    }
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+            e.preventDefault();
+        })
+    })
+    function pushError(data){
+        $("#emailNotValid").text(data['emailNotValid']);
+        $("#emailEmpty").text(data['emailEmpty']);
+        $("#emailExistInDb").text(data['emailExistInDb']);
+
+        $("#usernameExistInDb").text(data['usernameExistInDb']);
+        $("#usernameNotValid").text(data['usernameNotValid']);
+        $("#usernameEmpty").text(data['usernameEmpty']);
+
+        $("#password1Empty").text(data['password1Empty']);
+
+        $("#password2Empty").text(data['password2Empty']);
+
+        $("#passwordsNotTheSame").text(data['passwordsNotTheSame']);
+
+        $('#XSRF').text(data['XSRF']);
+    }
+    function pushField(username, useremail){
+        $("input[name='username']").val(username);
+        $("input[name='userEmail']").val(useremail);
+    }
+</script>
+{% endblock %}

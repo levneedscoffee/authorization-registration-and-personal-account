@@ -1,0 +1,6 @@
+config.json
+.idea
+composer.lock
+composer.phar
+composer-setup.php
+vendor

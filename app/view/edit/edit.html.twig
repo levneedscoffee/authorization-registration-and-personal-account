@@ -1,0 +1,59 @@
+{% extends "/base.html.twig" %}
+{% block logout %}
+     <div class="row justify-content-end">
+        <a class="col" href="auth?status=logout">Выход</a>
+     </div>
+{% endblock %}
+{% block body %}
+<div class="row justify-content-center align-items-center">
+    <h3 id="notify"></h3>
+</div>
+<form action="edit" method="post">
+    <div class="row justify-content-center align-items-center">
+        <input class="form-control col-5"  type="text" name="newUsername" value="{{ username }}">
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <ul>
+            <li><small id="usernameNotValidate"></small></li>
+        </ul>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <input class="btn btn-primary" type="submit" value="submit">
+    </div>
+    <input type="hidden" name="token" value="{{ token }}">
+    <small id="XSRF"></small>
+</form>
+<script type="text/javascript">
+    $("document").ready(function(){
+        $("form").submit(function(e){
+            $.ajax({
+                url: 'edit',
+                type: 'POST',
+                data: {"newUsername": $('input[name="newUsername"]').val(), 'token':$('input[name="token"]').val()},
+                dataType: 'json',
+                success: function(data){
+                    if(data.errors){
+                        pushError(data.errorsArray);
+                        pushField(data.message, data.newUsername)
+                    }else{
+                        pushField(data.message)
+                    }
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+            e.preventDefault();
+        })
+    })
+    function pushError(data){
+        $("#usernameNotValidate").text(data['usernameNotValidate']);
+        $('#XSRF').text(data['XSRF']);
+    }
+    function pushField(message, newUsername){
+        $("#notify").text(message);
+        $("input[name='username']").val(newUsername);
+        ;
+    }
+</script>
+{% endblock %}

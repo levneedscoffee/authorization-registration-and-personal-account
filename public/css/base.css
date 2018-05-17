@@ -1,0 +1,12 @@
+li{
+    text-align: center;
+}
+small{
+    color: red;
+}
+ul{
+    list-style-type: none;
+}
+input{
+    margin: 20px 0;
+}

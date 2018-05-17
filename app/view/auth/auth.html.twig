@@ -1,0 +1,63 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<form action="" method="post">
+    <div class="row justify-content-center align-items-center">
+        <input class="form-control col-5" placeholder="email" type="text" name="userEmail" value="{{ userEmail }}">
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <ul class="list-group">
+            <li><small  id="emailNotValid"></small></li>
+            <li><small id="emailEmpty"></small></li>
+            <li><small id="emailExistInDb"></small></li>
+        </ul>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <input class="form-control col-5" placeholder="password"  type="password"  name="password">
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <ul class="list-group">
+            <li><small id="passwordsNotTheSame"></small></li>
+            <li><small id="passwordEmpty"></small></li>
+        </ul>
+    </div>
+    <div class="row justify-content-center align-items-center">
+        <input class="btn btn-primary" type="submit" value="submit" name="submit">
+        <input  type="hidden" name="token" value="{{ token }}">
+         <small id="XSRF"></small>
+    </div>
+</form>
+<script type="text/javascript">
+    $("document").ready(function(){
+        $("form").submit(function(e){
+            $.ajax({
+                url: 'auth',
+                type: 'POST',
+                data: {"userEmail": $('input[name="userEmail"]').val(),
+                    "password": $('input[name="password"]').val(),
+                'token':$('input[name="token"]').val()},
+                dataType: 'json',
+                success: function(data){
+                    if(data.errors){
+                        pushError(data.errorsArray);
+                    }else{
+                        window.location.href = data.redirect;
+                    }
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+            e.preventDefault();
+        })
+    })
+    function pushError(data){
+        $("#emailNotValid").text(data['emailNotValid']);
+        $("#emailEmpty").text(data['emailEmpty']);
+        $("#emailExistInDb").text(data['emailExistInDb']);
+        $("#passwordsNotTheSame").text(data['passwordsNotTheSame']);
+        $("#passwordEmpty").text(data['passwordEmpty']);
+
+        $('#XSRF').text(data['XSRF']);
+    }
+</script>
+{% endblock %}
