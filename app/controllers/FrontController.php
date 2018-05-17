@@ -6,7 +6,7 @@ class FrontController
     private $routes;
     public function __construct()
     {
-        $routesPath = '/var/www/auth/app/config/routes.php';
+        $routesPath = PATH.'/app/config/routes.php';
         $this->routes = include($routesPath);
     }
     public function start()
@@ -25,7 +25,7 @@ class FrontController
 
 
                 $actionName = ucfirst($array[1]);
-                $path = '/var/www/auth/app/controllers/'.$controllerName.'.php';
+                $path = PATH.'/app/controllers/'.$controllerName.'.php';
 
                 if(file_exists($path)){
                     include_once($path);

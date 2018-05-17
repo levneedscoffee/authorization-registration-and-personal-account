@@ -9,7 +9,7 @@ class Controller
 
     protected function twigRender($templates, $values=array())
     {
-        $loader = new \Twig_Loader_Filesystem(PATH.'app/view');
+        $loader = new \Twig_Loader_Filesystem(PATH.'/app/view');
         $this->twig = new \Twig_Environment($loader);
 
         echo $this->twig->render($templates, $values);
