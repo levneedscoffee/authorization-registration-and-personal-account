@@ -16,7 +16,7 @@ class Validation
     public function validateNickname($nickname)
     {
         if(!preg_match('/^[0-9a-zA-Zа-яёА-ЯЁ]{1,35}$/u', $nickname)){
-            return "Никнейм дожен состоять толкько из букв или цифр и быть не больше 35 символов ";
+            return "Никнейм дожен состоять только из букв или цифр и быть не больше 35 символов ";
         }
         return true;
     }
