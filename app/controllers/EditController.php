@@ -28,15 +28,20 @@ class EditController extends Controller
             $errors = $this->checkData($postUsername);
 
             if(!empty($errors)){
-                if($username !== $postUsername){
-                    echo json_encode(['errors'=>true, 'errorsArray'=> $errors,
-                        'message' =>'Ник '.$postUsername." к сожалению занят", "username"=>$username]);
-                    exit;
+                if($username !== $postUsername) {
+                    if($db->checkUsername($postUsername)) {
+                        echo json_encode(['errors' => true, 'errorsArray' => $errors,
+                            'message' => 'Ник ' . $postUsername . " к сожалению занят", "username" => $username]);
+                        exit;
+                    }else {
+                        echo json_encode(['errors' => true, 'errorsArray' => $errors, "username" => $username]);
+                        exit;
+                    }
                 }else{
-                    echo json_encode(['errors'=>true, 'errorsArray'=> $errors, "username"=>$username]);
+                    echo json_encode(['errors' => true, 'errorsArray' => $errors,
+                        'message' =>'', "username" => $username]);
                     exit;
                 }
-
             }else{
                 $db->changeUserName($userEmail, $postUsername);
 

@@ -48,6 +48,7 @@
     <p id="statusText"></p>
     <p id="thrownError"></p>
     <p id="ajaxOptions"></p>
+<script type="text/javascript" src="js/resetError.js"></script>
 <script type="text/javascript">
     $("document").ready(function(){
         $("form").submit(function(e){
@@ -62,6 +63,7 @@
                 dataType: 'json',
                 success: function(data){
                     if(data.errors){
+                        resetError();
                         pushError(data.errorsArray);
                         pushField(data.username, data.userEmail);
                     }else{

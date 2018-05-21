@@ -1,0 +1,3 @@
+function resetError() {
+    $('small').empty();
+}

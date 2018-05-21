@@ -14,7 +14,7 @@
     </div>
     <div class="row justify-content-center align-items-center">
         <ul>
-            <li><small id="usernameNotValidate"></small></li>
+            <li><small id="usernameNotValid"></small></li>
         </ul>
     </div>
     <div class="row justify-content-center align-items-center">
@@ -27,6 +27,7 @@
     <p id="statusText"></p>
     <p id="thrownError"></p>
     <p id="ajaxOptions"></p>
+<script type="text/javascript" src="js/resetError.js"></script>
 <script type="text/javascript">
     $("document").ready(function(){
         $("form").submit(function(e){
@@ -36,6 +37,7 @@
                 data: {"newUsername": $('input[name="newUsername"]').val(), 'token':$('input[name="token"]').val()},
                 dataType: 'json',
                 success: function(data){
+                    resetError();
                     if(data.errors){
                         pushError(data.errorsArray);
                         pushField(data.message, data.newUsername)
@@ -54,7 +56,7 @@
         })
     })
     function pushError(data){
-        $("#usernameNotValidate").text(data['usernameNotValidate']);
+        $("#usernameNotValid").text(data['usernameNotValid']);
         $('#XSRF').text(data['XSRF']);
     }
     function pushField(message, newUsername){
