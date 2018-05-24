@@ -8,7 +8,7 @@ define('PATH', $path);
 
 
 require_once (PATH."/vendor/autoload.php");
-require_once (PATH."/app/controllers/FrontController.php");
+require_once (PATH."/app/Controllers/FrontController.php");
 
 $obj = new Auth\Controllers\FrontController();
 $obj->start();

@@ -11,11 +11,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Auth\\Controllers\\": "app/controllers/",
-            "Auth\\Models\\": "app/models/",
-            "Auth\\Cookie\\": "app/cookie",
-            "Auth\\Validation\\": "app/validation",
-            "Auth\\Security\\": "app/security"
+            "Auth\\": "app/"
         }
     }
 }

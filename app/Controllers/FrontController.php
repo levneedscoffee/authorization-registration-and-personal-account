@@ -25,7 +25,7 @@ class FrontController
 
 
                 $actionName = ucfirst($array[1]);
-                $path = PATH.'/app/controllers/'.$controllerName.'.php';
+                $path = PATH.'/app/Controllers/'.$controllerName.'.php';
 
                 if(file_exists($path)){
                     include_once($path);
