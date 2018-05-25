@@ -1,5 +1,7 @@
 <?php
+
 namespace Auth\Controllers;
+
 use Auth\Models\UserDataGateway;
 use Auth\Models\DatabaseMySQL;
 use Auth\Validation\UserValidation;
@@ -7,11 +9,12 @@ use Auth\Security\Security;
 
 class EditController extends Controller
 {
-    public function edit(){
+    public function edit()
+    {
         $security = new Security();
         $token = $security->createUniqueTokenXSRF();
 
-        if(!isset($_COOKIE["userEmail"])){
+        if (!isset($_COOKIE["userEmail"])) {
             header("Location: auth");
         }
 
@@ -22,38 +25,39 @@ class EditController extends Controller
         $userValue = $db->returnUserValue($userEmail);
         $username = $userValue["username"];
 
-        if($_SERVER["REQUEST_METHOD"] === "POST"){
-            $postUsername= trim($_POST["newUsername"]);
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $postUsername = trim($_POST["newUsername"]);
 
             $errors = $this->checkData($postUsername);
 
-            if(!empty($errors)){
-                if($username !== $postUsername) {
-                    if($db->checkUsername($postUsername)) {
+            if (!empty($errors)) {
+                if ($username !== $postUsername) {
+                    if ($db->checkUsername($postUsername)) {
                         echo json_encode(['errors' => true, 'errorsArray' => $errors,
                             'message' => 'Ник ' . $postUsername . " к сожалению занят", "username" => $username]);
                         exit;
-                    }else {
+                    } else {
                         echo json_encode(['errors' => true, 'errorsArray' => $errors, "username" => $username]);
                         exit;
                     }
-                }else{
+                } else {
                     echo json_encode(['errors' => true, 'errorsArray' => $errors,
-                        'message' =>'', "username" => $username]);
+                        'message' => '', "username" => $username]);
                     exit;
                 }
-            }else{
+            } else {
                 $db->changeUserName($userEmail, $postUsername);
 
-                echo json_encode(['errors'=>false, 'username'=>$username, 'message'=>'Вы изменили свой никнейм']);
+                echo json_encode(['errors' => false, 'username' => $username, 'message' => 'Вы изменили свой никнейм']);
                 exit;
             }
         }
 
-        $this->twigRender('edit/edit.html.twig',['username'=> $username, 'token'=>$token]);
+        $this->twigRender('edit/edit.html.twig', ['username' => $username, 'token' => $token]);
     }
 
-    public function checkData($newUsername){
+    public function checkData($newUsername)
+    {
 
         $validation = new UserValidation();
         $validation->validateFieldUsername($newUsername);
